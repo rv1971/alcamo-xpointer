@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<foo
+    xmlns="http://foo.example.org"
+    xmlns:bar="http://bar.example.com">
+  <baz>Lorem ipsum</baz>
+  <bar:baz content="qux">sadipscing</bar:baz>
+  <bar:quux xml:id="quux42">consetetur</bar:quux>
+  <baz name="(^^)">takimata</baz>
+</foo>
