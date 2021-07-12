@@ -3,6 +3,13 @@
 namespace alcamo\xpointer;
 
 /**
+ * @namespace alcamo::xpointer
+ *
+ * @brief Implementation of XPointer framework with xmlns() and xpointer()
+ * schemes
+ */
+
+/**
  * @brief XPointer interface
  *
  * @sa [XPointer Framework](https://www.w3.org/TR/xptr-framework/)
