@@ -56,10 +56,11 @@ class Pointer implements PointerInterface
                 if (!preg_match(Syntax::NAME_REGEXP, $schemeName)) {
                     /** @throw alcamo::exception::SyntaxError when
                      *  encountering a syntactically invalid scheme name. */
-                    throw new SyntaxError(
-                        $schemeName,
-                        null,
-                        '; invalid scheme name'
+                    throw (new SyntaxError())->setMessageContext(
+                        [
+                            'inData' => $schemeName,
+                            'extraMessage' => 'invalid scheme name'
+                        ]
                     );
                 }
 
@@ -74,10 +75,12 @@ class Pointer implements PointerInterface
                     /** @throw alcamo::exception::SyntaxError when a
                      *  circumflex is used neither to escape a parenthesis nor
                      *  another circumflex. */
-                    throw new SyntaxError(
-                        $schemeData,
-                        $matches2[0][1],
-                        '; invalid use of circumflex'
+                    throw (new SyntaxError())->setMessageContext(
+                        [
+                            'inData' => $schemeData,
+                            'atOffset' => $matches2[0][1],
+                            'extraMessage' => 'invalid use of circumflex'
+                        ]
                     );
                 }
 

@@ -106,8 +106,8 @@ class PointerTest extends TestCase
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage(
-            'Syntax error in "x=http://^example.com" at 9: "^example.c..."; '
-            . 'invalid use of circumflex'
+            'Syntax error in "x=http://^example.com"'
+            . ' at offset 9 ("^example.com"); invalid use of circumflex'
         );
 
         FooPointer::newFromString('xmlns(x=http://^example.com)');
