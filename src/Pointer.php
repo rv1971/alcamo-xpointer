@@ -2,9 +2,8 @@
 
 namespace alcamo\xpointer;
 
-use alcamo\exception\SyntaxError;
+use alcamo\exception\{SyntaxError, UnknownNamespacePrefix};
 use alcamo\xml\{Syntax, XName};
-use alcamo\xml\exception\UnknownNamespacePrefix;
 
 /**
  * @brief XPointer
