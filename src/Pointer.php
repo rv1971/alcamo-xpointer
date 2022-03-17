@@ -41,7 +41,7 @@ class Pointer implements PointerInterface
         } else {
             $pieces = preg_split(
                 '/\(((?:\^\)|[^)])*)\)/',
-                $fragment,
+                str_replace('%5E', '^', $fragment),
                 -1,
                 PREG_SPLIT_DELIM_CAPTURE
             );

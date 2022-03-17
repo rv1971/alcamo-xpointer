@@ -83,6 +83,13 @@ class PointerTest extends TestCase
                 'takimata'
             ],
 
+            'pct-encoced-escaped' => [
+                $doc,
+                'xpointer(//*[@name="%5E(%5E%5E%5E%5E%5E)"])',
+                'baz',
+                'takimata'
+            ],
+
             'extension' => [
                 $doc,
                 'xmlns(f=http://foo.example.org)f:bar(2)',
