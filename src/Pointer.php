@@ -46,6 +46,17 @@ class Pointer implements PointerInterface
                 PREG_SPLIT_DELIM_CAPTURE
             );
 
+            if (count($pieces) % 2 && $pieces[count($pieces) - 1]) {
+                /** @throw alcamo::exception::SyntaxError when encountering a
+                 *  parentheses nesting error. */
+                throw (new SyntaxError())->setMessageContext(
+                    [
+                        'inData' => $fragment,
+                        'extraMessage' => 'parantheses nesting error or unexcaped parantheses used'
+                    ]
+                );
+            }
+
             $parts = [];
 
             for ($i = 0; isset($pieces[$i]) && $pieces[$i] != ''; $i += 2) {
