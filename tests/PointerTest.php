@@ -103,7 +103,7 @@ class PointerTest extends TestCase
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage(
-            'Syntax error in "xpointer(id("foo"))"; parantheses nesting error or unexcaped parantheses used'
+            'Syntax error in "xpointer(id("foo"))"; parentheses nesting error or unexcaped parentheses used'
         );
 
         FooPointer::newFromString('xpointer(id("foo"))');

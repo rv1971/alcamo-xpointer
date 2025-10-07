@@ -12,9 +12,9 @@ namespace alcamo\xpointer;
 /**
  * @brief XPointer interface
  *
- * @sa [XPointer Framework](https://www.w3.org/TR/xptr-framework/)
+ * @sa [XPointer Framework: Pointer](https://www.w3.org/TR/xptr-framework/#dt-pointer)
  *
- * @date Last reviewed 2021-06-24
+ * @date Last reviewed 2025-10-07
  */
 interface PointerInterface
 {

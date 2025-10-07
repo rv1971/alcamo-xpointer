@@ -10,7 +10,7 @@ use alcamo\xml\{Syntax, XName};
  *
  * @sa [XPointer Framework](https://www.w3.org/TR/xptr-framework/)
  *
- * @date Last reviewed 2021-06-24
+ * @date Last reviewed 2025-10-07
  */
 class Pointer implements PointerInterface
 {
@@ -38,79 +38,82 @@ class Pointer implements PointerInterface
     {
         if (strpos($fragment, '(') === false) {
             return new static($fragment, null);
-        } else {
-            $pieces = preg_split(
-                '/\(((?:\^\)|[^)])*)\)/',
-                str_replace('%5E', '^', $fragment),
-                -1,
-                PREG_SPLIT_DELIM_CAPTURE
-            );
+        }
 
-            if (count($pieces) % 2 && $pieces[count($pieces) - 1]) {
-                /** @throw alcamo::exception::SyntaxError when encountering a
-                 *  parentheses nesting error. */
+        $pieces = preg_split(
+            '/\(((?:\^\)|[^)])*)\)/',
+            str_replace('%5E', '^', $fragment),
+            -1,
+            PREG_SPLIT_DELIM_CAPTURE
+        );
+
+        if (count($pieces) % 2 && $pieces[count($pieces) - 1]) {
+            /** @throw alcamo::exception::SyntaxError when encountering a
+             *  parentheses nesting error. */
+            throw (new SyntaxError())->setMessageContext(
+                [
+                    'inData' => $fragment,
+                    'extraMessage' =>
+                        'parentheses nesting error or unexcaped parentheses used'
+                ]
+            );
+        }
+
+        $parts = [];
+
+        for ($i = 0; isset($pieces[$i]) && $pieces[$i] != ''; $i += 2) {
+            $schemeName = ltrim($pieces[$i]);
+            $schemeData = $pieces[$i + 1];
+
+            if (!preg_match(Syntax::NAME_REGEXP, $schemeName)) {
+                /** @throw alcamo::exception::SyntaxError when
+                 *  encountering a syntactically invalid scheme name. */
                 throw (new SyntaxError())->setMessageContext(
                     [
-                        'inData' => $fragment,
-                        'extraMessage' => 'parantheses nesting error or unexcaped parantheses used'
+                        'inData' => $schemeName,
+                        'extraMessage' => 'invalid scheme name'
                     ]
                 );
             }
 
-            $parts = [];
-
-            for ($i = 0; isset($pieces[$i]) && $pieces[$i] != ''; $i += 2) {
-                $schemeName = ltrim($pieces[$i]);
-                $schemeData = $pieces[$i + 1];
-
-                if (!preg_match(Syntax::NAME_REGEXP, $schemeName)) {
-                    /** @throw alcamo::exception::SyntaxError when
-                     *  encountering a syntactically invalid scheme name. */
-                    throw (new SyntaxError())->setMessageContext(
-                        [
-                            'inData' => $schemeName,
-                            'extraMessage' => 'invalid scheme name'
-                        ]
-                    );
-                }
-
-                if (
-                    preg_match(
-                        '/(?<!\^)\^[^^()]/',
-                        $schemeData,
-                        $matches2,
-                        PREG_OFFSET_CAPTURE
-                    )
-                ) {
-                    /** @throw alcamo::exception::SyntaxError when a
-                     *  circumflex is used neither to escape a parenthesis nor
-                     *  another circumflex. */
-                    throw (new SyntaxError())->setMessageContext(
-                        [
-                            'inData' => $schemeData,
-                            'atOffset' => $matches2[0][1],
-                            'extraMessage' => 'invalid use of circumflex'
-                        ]
-                    );
-                }
-
-                $schemeData = str_replace(
-                    [ '^(', '^)', '^^' ],
-                    [ '(', ')', '^' ],
-                    $schemeData
+            if (
+                preg_match(
+                    '/(?<!\^)\^[^^()]/',
+                    $schemeData,
+                    $matches2,
+                    PREG_OFFSET_CAPTURE
+                )
+            ) {
+                /** @throw alcamo::exception::SyntaxError when a
+                 *  circumflex is used neither to escape a parenthesis nor
+                 *  another circumflex. */
+                throw (new SyntaxError())->setMessageContext(
+                    [
+                        'inData' => $schemeData,
+                        'atOffset' => $matches2[0][1],
+                        'extraMessage' => 'invalid use of circumflex'
+                    ]
                 );
-
-                $parts[] = [ $schemeName, $schemeData ];
             }
 
-            return new static(null, $parts);
+            $schemeData = str_replace(
+                [ '^(', '^)', '^^' ],
+                [ '(', ')', '^' ],
+                $schemeData
+            );
+
+            $parts[] = [ $schemeName, $schemeData ];
         }
+
+        return new static(null, $parts);
     }
 
     /**
      * @param $shorthand Shorthand pointer, or `null`.
      *
      * @param $parts Array of pairs of scheme name and data, or `null`.
+     *
+     * Exactly one of the two parameters must be non-`null`.
      */
     protected function __construct(?string $shorthand, ?array $parts)
     {
@@ -131,7 +134,7 @@ class Pointer implements PointerInterface
             [ $schemeName, $schemeData ] = $part;
 
             try {
-                $schemeName =
+                $schemeXName =
                     (string)XName::newFromQNameAndMap($schemeName, $nsBindings);
             } catch (UnknownNamespacePrefix $e) {
                 // gracefully skip unknown namespace prefixes
@@ -139,8 +142,8 @@ class Pointer implements PointerInterface
             }
 
                 // gracefully skip unsupported schemes
-            if (isset(static::SCHEME_MAP[$schemeName])) {
-                $class = static::SCHEME_MAP[$schemeName];
+            if (isset(static::SCHEME_MAP[$schemeXName])) {
+                $class = static::SCHEME_MAP[$schemeXName];
 
                 $result =
                     (new $class())->process($nsBindings, $schemeData, $doc);

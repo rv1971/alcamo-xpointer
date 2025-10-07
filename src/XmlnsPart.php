@@ -7,7 +7,7 @@ namespace alcamo\xpointer;
  *
  * @sa [XPointer xmlns() Scheme](https://www.w3.org/TR/xptr-xmlns/)
  *
- * @date Last reviewed 2021-06-24
+ * @date Last reviewed 2025-10-07
  */
 class XmlnsPart implements PartInterface
 {
@@ -22,7 +22,7 @@ class XmlnsPart implements PartInterface
         array &$nsBindings,
         string $schemeData,
         \DOMDocument $doc
-    ) {
+    ): void {
         $a = explode('=', $schemeData, 2);
 
         $nsBindings[rtrim($a[0])] = ltrim($a[1]);

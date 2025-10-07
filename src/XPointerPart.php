@@ -7,10 +7,9 @@ namespace alcamo\xpointer;
  *
  * @warning Extensions to XPath 1.0 are not supported.
  *
- * @sa
- * [https://www.w3.org/TR/xptr-xpointer/](https://www.w3.org/TR/xptr-xpointer/)
+ * @sa [XPointer xpointer() Scheme](https://www.w3.org/TR/xptr-xpointer/)
  *
- * @date Last reviewed 2021-06-24
+ * @date Last reviewed 2025-10-07
  */
 class XpointerPart implements PartInterface
 {
