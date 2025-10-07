@@ -23,7 +23,7 @@ $bar = $pointer->process($doc);
 ~~~
 
 
-# Supplied classes and interfaces
+# Supplied interfaces and classes
 
 ## Interface `PointerInterface`
 
