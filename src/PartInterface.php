@@ -17,7 +17,7 @@ interface PartInterface
      * @param $nsBindings Namespace bindings. May be modified by this method.
      *
      * @param $schemeData See [XPointer
-     * Syntax](https://www.w3.org/TR/xptr-framework/#syntax)
+     * Syntax](https://www.w3.org/TR/xptr-framework/#syntax).
      *
      * @param $doc Document with respect to which the pointer is evaluated.
      *

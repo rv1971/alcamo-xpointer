@@ -12,7 +12,7 @@ namespace alcamo\xpointer;
 class XmlnsPart implements PartInterface
 {
     /**
-     * @copybrief PartInterface::process()
+     * @copydoc alcamo::xpointer::PartInterface::process()
      *
      * @warning The implementation does not enforce the constraints defined
      * in [Namespace Binding

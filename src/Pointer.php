@@ -29,7 +29,7 @@ class Pointer implements PointerInterface
     private $parts_;     ///< ?array of pairs of scheme name and data
 
     /**
-     * @copybrief PointerInterface::newFromString()
+     * @copydoc alcamo::xpointer::PointerInterface::newFromString()
      *
      * @warning Unescaped parentheses in scheme data are not supported, not
      * even when balanced.
@@ -121,7 +121,7 @@ class Pointer implements PointerInterface
         $this->parts_ = $parts;
     }
 
-    /// @copybrief PointerInterface::process()
+    /** @copydoc alcamo::xpointer::PointerInterface::process() */
     public function process(\DOMDocument $doc)
     {
         if (isset($this->shorthand_)) {

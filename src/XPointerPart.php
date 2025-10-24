@@ -13,16 +13,12 @@ namespace alcamo\xpointer;
  */
 class XpointerPart implements PartInterface
 {
-    /**
-     * @copybrief PartInterface::process()
-     *
-     * @return DOMNodeList or `null`
-     */
+    /** @copydoc alcamo::xpointer::PartInterface::process() */
     public function process(
         array &$nsBindings,
         string $schemeData,
         \DOMDocument $doc
-    ) {
+    ): ?\DOMNodeList {
         $xPath = new \DOMXPath($doc);
 
         foreach ($nsBindings as $prefix => $nsName) {
